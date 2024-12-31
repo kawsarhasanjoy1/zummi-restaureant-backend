@@ -14,20 +14,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const AppError_1 = require("../../middleWare/AppError");
 const model_1 = __importDefault(require("../user/model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = __importDefault(require("../../../config/config"));
+const AppError_1 = __importDefault(require("../../middleWare/AppError"));
 const loginServices = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload;
     const user = yield model_1.default.findOne({ email });
     if (!user) {
-        throw new AppError_1.AppError("User dose not exist", 404);
+        throw new AppError_1.default(404, "User dose not exist");
     }
     const hashPassword = user === null || user === void 0 ? void 0 : user.password;
     const match = yield bcrypt_1.default.compare(password, hashPassword);
     if (!match) {
-        throw new AppError_1.AppError("Password did not match", 403);
+        throw new AppError_1.default(403, "Password did not match");
     }
     const userPayload = {
         id: user === null || user === void 0 ? void 0 : user._id,
@@ -44,5 +44,5 @@ const loginServices = (payload) => __awaiter(void 0, void 0, void 0, function* (
     };
 });
 exports.AuthService = {
-    loginServices
+    loginServices,
 };
