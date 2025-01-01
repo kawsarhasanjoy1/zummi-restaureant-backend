@@ -25,6 +25,17 @@ const loginController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
         data: result,
     });
 }));
+const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const password = req.body;
+    const user = req.user;
+    const result = yield services_1.AuthService.changePassword(user, password);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 201,
+        message: "password change successful",
+        data: result,
+    });
+}));
 exports.authController = {
     loginController,
+    changePassword
 };

@@ -43,6 +43,38 @@ const loginServices = (payload) => __awaiter(void 0, void 0, void 0, function* (
         token,
     };
 });
+const changePassword = (user, Password) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExistsId = yield model_1.default.findById(user === null || user === void 0 ? void 0 : user.id);
+    if (!isExistsId) {
+        throw new Error("User dose not exist");
+    }
+    const role = user === null || user === void 0 ? void 0 : user.role;
+    const dbRole = isExistsId === null || isExistsId === void 0 ? void 0 : isExistsId.role;
+    if (role !== dbRole) {
+        throw new Error("don't match role");
+    }
+    const isExistPassword = isExistsId === null || isExistsId === void 0 ? void 0 : isExistsId.password;
+    const passwordCompare = yield bcrypt_1.default.compare(Password === null || Password === void 0 ? void 0 : Password.oldPassword, isExistPassword);
+    if (!passwordCompare) {
+        throw new Error("didn't match password");
+    }
+    const password = Password === null || Password === void 0 ? void 0 : Password.newPassword;
+    if (password == (Password === null || Password === void 0 ? void 0 : Password.oldPassword)) {
+        throw new Error("Password change failed. Ensure the new password is unique and not among");
+    }
+    const newHashPass = yield bcrypt_1.default.hash(password, Number(10));
+    const result = yield model_1.default.findByIdAndUpdate({ _id: user === null || user === void 0 ? void 0 : user.id }, { password: newHashPass });
+    const data = {
+        _id: user === null || user === void 0 ? void 0 : user.id,
+        username: isExistsId === null || isExistsId === void 0 ? void 0 : isExistsId.name,
+        email: user === null || user === void 0 ? void 0 : user.email,
+        role: user === null || user === void 0 ? void 0 : user.role,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    };
+    return data;
+});
 exports.AuthService = {
     loginServices,
+    changePassword
 };

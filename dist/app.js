@@ -5,11 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const routes_1 = __importDefault(require("./app/routes/routes"));
+const cors_1 = __importDefault(require("cors"));
 const notFound_1 = __importDefault(require("./app/middleWare/notFound"));
 const globalErrorHandler_1 = require("./app/middleWare/globalErrorHandler");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, cors_1.default)());
+// app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });

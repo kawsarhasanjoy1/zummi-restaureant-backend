@@ -19,10 +19,24 @@ const deleteUser = async (id: string) => {
   const result = await UserModel.findByIdAndDelete(id);
   return result;
 };
+const updateUser = async (id: string, payload: any) => {
+  const result = await UserModel.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
+const updateRole = async (id: string, role: string) => {
+  const result = await UserModel.findOneAndUpdate(
+    { _id: id },
+    { role: role },
+    { new: true }
+  );
+  return result;
+};
 
 export const userServices = {
   createUser,
   getAllUser,
   getSingleUser,
-  deleteUser
+  deleteUser,
+  updateUser,
+  updateRole,
 };

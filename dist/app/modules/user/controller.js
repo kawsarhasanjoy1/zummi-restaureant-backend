@@ -51,9 +51,31 @@ const deleteUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 
         data: result,
     });
 }));
+const UpdateUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.userId;
+    const user = req.body;
+    const result = yield services_1.userServices.updateUser(id, user);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "User update successful",
+        data: result,
+    });
+}));
+const UpdateRole = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.userId;
+    const { role } = req.body;
+    const result = yield services_1.userServices.updateRole(id, role);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "Role update successful",
+        data: result,
+    });
+}));
 exports.userController = {
     createUser,
     getAllUser,
     getSingleUser,
-    deleteUser
+    deleteUser,
+    UpdateUser,
+    UpdateRole,
 };

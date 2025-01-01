@@ -4,7 +4,7 @@ import { TUser } from "../modules/user/interface";
 import UserModel from "../modules/user/model";
 
 const superUser: TUser = {
-  email: "kawsarhasanjoy342@gmail,com",
+  email: "kawsarhasanjoy342@gmail.com",
   name: 'Md Kawsar',
   password: config.super_admin_pass as string,
   role: USER_ROLE.superAdmin,

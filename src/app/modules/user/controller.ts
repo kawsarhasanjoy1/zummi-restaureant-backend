@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { userServices } from "./services";
 import catchAsync from "../../../shared/utils/catchAsync";
 import sendResponse from "../../../shared/utils/sendResponse";
-import { AppError } from "../../middleWare/AppError";
 
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -50,10 +49,36 @@ const deleteUser = catchAsync(
     });
   }
 );
+const UpdateUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.userId;
+    const user = req.body;
+    const result = await userServices.updateUser(id, user);
+    sendResponse(res, {
+      statusCode: 200,
+      message: "User update successful",
+      data: result,
+    });
+  }
+);
+const UpdateRole = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.userId;
+    const { role } = req.body;
+    const result = await userServices.updateRole(id, role);
+    sendResponse(res, {
+      statusCode: 200,
+      message: "Role update successful",
+      data: result,
+    });
+  }
+);
 
 export const userController = {
   createUser,
   getAllUser,
   getSingleUser,
-  deleteUser
+  deleteUser,
+  UpdateUser,
+  UpdateRole,
 };

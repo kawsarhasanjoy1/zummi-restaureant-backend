@@ -30,9 +30,19 @@ const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_1.default.findByIdAndDelete(id);
     return result;
 });
+const updateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield model_1.default.findByIdAndUpdate(id, payload, { new: true });
+    return result;
+});
+const updateRole = (id, role) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield model_1.default.findOneAndUpdate({ _id: id }, { role: role }, { new: true });
+    return result;
+});
 exports.userServices = {
     createUser,
     getAllUser,
     getSingleUser,
-    deleteUser
+    deleteUser,
+    updateUser,
+    updateRole,
 };
