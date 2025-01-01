@@ -17,7 +17,7 @@ exports.productSchema = zod_1.z.object({
         name: zod_1.z.string(),
         title: zod_1.z.string(),
         category: zod_1.z.string(),
-        userId: zod_1.z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format").optional(),
+        userId: zod_1.z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format"),
         price: zod_1.z.number().positive(),
         ingredients: zod_1.z.array(ingredientSchema),
         description: zod_1.z.string(),

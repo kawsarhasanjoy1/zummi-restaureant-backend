@@ -8,6 +8,10 @@ import { USER_ROLE } from "../../constance/constance";
 const userRouter = Router();
 
 userRouter.post(
+  "/create-chef",
+  userController.createChef
+);
+userRouter.post(
   "/create-user",
   zodMiddleware(UserZodValidation),
   userController.createUser

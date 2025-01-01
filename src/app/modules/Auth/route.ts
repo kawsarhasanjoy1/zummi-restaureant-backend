@@ -14,7 +14,7 @@ AuthRouter.post(
 );
 AuthRouter.post(
   "/change-password",
-  auth(USER_ROLE.user, USER_ROLE.admin, USER_ROLE.superAdmin),
+  auth(USER_ROLE.user, USER_ROLE.admin, USER_ROLE.superAdmin, USER_ROLE.chef),
   authController.changePassword
 );
 

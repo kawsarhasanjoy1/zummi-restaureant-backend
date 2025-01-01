@@ -13,32 +13,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userServices = void 0;
-const model_1 = __importDefault(require("./model"));
+const model_1 = __importDefault(require("../chef/model"));
+const model_2 = __importDefault(require("./model"));
+const createChef = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = {};
+    const role = "chef";
+    (user.password = (payload === null || payload === void 0 ? void 0 : payload.password) || "zummi123"), (user.role = role);
+    (user.email = payload.email),
+        (user.name = payload.name),
+        (user.image = payload.image);
+    const NewUser = yield model_2.default.create(user);
+    if (Object.keys(NewUser).length > 0) {
+        payload.userId = NewUser._id;
+        const newChef = yield model_1.default.create(payload);
+        return newChef;
+    }
+});
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.create(payload);
+    const result = yield model_2.default.create(payload);
     return result;
 });
 const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.find();
+    const result = yield model_2.default.find();
     return result;
 });
 const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.findById(id);
+    const result = yield model_2.default.findById(id);
     return result;
 });
 const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.findByIdAndDelete(id);
+    const result = yield model_2.default.findByIdAndDelete(id);
     return result;
 });
 const updateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.findByIdAndUpdate(id, payload, { new: true });
+    const result = yield model_2.default.findByIdAndUpdate(id, payload, { new: true });
     return result;
 });
 const updateRole = (id, role) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.findOneAndUpdate({ _id: id }, { role: role }, { new: true });
+    const result = yield model_2.default.findOneAndUpdate({ _id: id }, { role: role }, { new: true });
     return result;
 });
 exports.userServices = {
+    createChef,
     createUser,
     getAllUser,
     getSingleUser,

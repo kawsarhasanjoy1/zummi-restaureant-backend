@@ -17,7 +17,7 @@ export const productSchema = z.object({
     name: z.string(),
     title: z.string(),
     category: z.string(),
-    userId: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format").optional(),
+    userId: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId format"),
     price: z.number().positive(),
     ingredients: z.array(ingredientSchema),
     description: z.string(),

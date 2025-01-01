@@ -3,10 +3,22 @@ import { userServices } from "./services";
 import catchAsync from "../../../shared/utils/catchAsync";
 import sendResponse from "../../../shared/utils/sendResponse";
 
-const createUser = catchAsync(
+const createChef = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body;
-    const result = await userServices.createUser(user);
+    console.log(user);
+    const result = await userServices.createChef(user);
+    sendResponse(res, {
+      statusCode: 201,
+      message: "Chef created successful",
+      data: result,
+    });
+  }
+);
+const createUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const chef = req.body;
+    const result = await userServices.createUser(chef);
     sendResponse(res, {
       statusCode: 201,
       message: "User created successful",
@@ -75,6 +87,7 @@ const UpdateRole = catchAsync(
 );
 
 export const userController = {
+  createChef,
   createUser,
   getAllUser,
   getSingleUser,

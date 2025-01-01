@@ -16,9 +16,19 @@ exports.userController = void 0;
 const services_1 = require("./services");
 const catchAsync_1 = __importDefault(require("../../../shared/utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../shared/utils/sendResponse"));
-const createUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const createChef = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.body;
-    const result = yield services_1.userServices.createUser(user);
+    console.log(user);
+    const result = yield services_1.userServices.createChef(user);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 201,
+        message: "Chef created successful",
+        data: result,
+    });
+}));
+const createUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const chef = req.body;
+    const result = yield services_1.userServices.createUser(chef);
     (0, sendResponse_1.default)(res, {
         statusCode: 201,
         message: "User created successful",
@@ -72,6 +82,7 @@ const UpdateRole = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 
     });
 }));
 exports.userController = {
+    createChef,
     createUser,
     getAllUser,
     getSingleUser,
