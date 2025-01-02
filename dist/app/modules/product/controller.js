@@ -26,7 +26,7 @@ const createProduct = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
     });
 }));
 const getProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield service_1.productServices.getProducts();
+    const result = yield service_1.productServices.getProducts(req.query);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         message: "Product fetched successful",

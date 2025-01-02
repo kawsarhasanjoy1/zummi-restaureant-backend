@@ -13,7 +13,7 @@ const createProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getProducts = catchAsync(async (req: Request, res: Response) => {
-  const result = await productServices.getProducts();
+  const result = await productServices.getProducts(req.query);
   sendResponse(res, {
     statusCode: 200,
     message: "Product fetched successful",
