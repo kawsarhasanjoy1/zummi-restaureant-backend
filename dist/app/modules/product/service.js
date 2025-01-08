@@ -57,8 +57,12 @@ const getProducts = (query) => __awaiter(void 0, void 0, void 0, function* () {
         .filter()
         .sort()
         .pagination();
-    const result = yield productQuery.QueryModel.populate("reviews");
-    return result;
+    const meta = yield productQuery.countTotal();
+    const result = yield productQuery.QueryModel.populate("userId");
+    return {
+        result,
+        meta,
+    };
 });
 const getProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_1.default.findById(id);

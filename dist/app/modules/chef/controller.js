@@ -17,7 +17,7 @@ const services_1 = require("./services");
 const catchAsync_1 = __importDefault(require("../../../shared/utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../shared/utils/sendResponse"));
 const getChefs = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield services_1.chefServices.getChefs();
+    const result = yield services_1.chefServices.getChefs(req === null || req === void 0 ? void 0 : req.query);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         message: "Chef fetched successful",

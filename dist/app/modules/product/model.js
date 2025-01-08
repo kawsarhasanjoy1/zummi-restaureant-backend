@@ -34,6 +34,7 @@ const productSchema = new mongoose_1.Schema({
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    timestamps: true,
 });
 productSchema.virtual("reviews", {
     ref: "review",

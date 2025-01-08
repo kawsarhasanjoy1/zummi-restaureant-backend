@@ -38,6 +38,7 @@ const productSchema = new Schema<TProduct>(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    timestamps: true,
   }
 );
 

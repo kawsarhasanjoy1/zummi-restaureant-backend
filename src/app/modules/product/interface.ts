@@ -17,7 +17,7 @@ export type TProduct = {
   title: string;
   stock: number;
   category: string;
-  userId?: Types.ObjectId;
+  userId: Types.ObjectId;
   price: number;
   priceOff: number;
   ingredients: Ingredient[];

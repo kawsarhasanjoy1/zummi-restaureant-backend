@@ -36,7 +36,7 @@ const loginServices = (payload) => __awaiter(void 0, void 0, void 0, function* (
         role: user === null || user === void 0 ? void 0 : user.role,
     };
     const token = jsonwebtoken_1.default.sign(userPayload, config_1.default.access_token, {
-        expiresIn: "1h",
+        expiresIn: "1d",
     });
     return {
         user: userPayload,

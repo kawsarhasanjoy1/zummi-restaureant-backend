@@ -53,8 +53,12 @@ const getProducts = async (query: Record<string, unknown>) => {
     .filter()
     .sort()
     .pagination();
-  const result = await productQuery.QueryModel.populate("reviews");
-  return result;
+  const meta = await productQuery.countTotal();
+  const result = await productQuery.QueryModel.populate("userId");
+  return {
+    result,
+    meta,
+  };
 };
 const getProduct = async (id: string) => {
   const result = await ProductModel.findById(id);

@@ -13,10 +13,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.chefServices = void 0;
+const QueryBuilder_1 = __importDefault(require("../../Builder/QueryBuilder"));
 const model_1 = __importDefault(require("./model"));
-const getChefs = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.find().populate("userId");
-    return result;
+const getChefs = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const searchTerm = ["name", "title"];
+    const searchQuery = new QueryBuilder_1.default(model_1.default.find(), query)
+        .search(searchTerm)
+        .filter()
+        .sort()
+        .pagination();
+    const countTotal = yield searchQuery.countTotal();
+    const result = yield searchQuery.QueryModel.populate("userId");
+    return {
+        countTotal,
+        result,
+    };
 });
 const getChef = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_1.default.findById(id);

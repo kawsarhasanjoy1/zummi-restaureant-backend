@@ -1,12 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { ZodError, ZodIssue } from "zod";
-import {
-  TErrorSources,
-  TGenericErrorResponse,
-} from "../../interface/interface";
+import { ZodError } from "zod";
+import { TErrorSources } from "../../interface/interface";
 import HandleZodError from "../errors/HandleZodError";
 import HandleCastError from "../errors/HandleCastError";
 import HandleMongooseError from "../errors/HandleMongooseError";
+import AppError from "./AppError";
 
 export const globalErrorHandler = (
   error: any,
@@ -38,7 +36,18 @@ export const globalErrorHandler = (
     (status = simplified.statusCode),
       (message = simplified.message),
       (errorSources = simplified.errorSources);
+  } else if (error instanceof AppError) {
+    // Handle custom AppError
+    status = error.statusCode;
+    message = error.message;
+    errorSources = [
+      {
+        path: "",
+        message: error.message,
+      },
+    ];
   }
+
   res.status(status).json({
     success: false,
     message,

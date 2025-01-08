@@ -26,7 +26,7 @@ const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const getBlogs = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield services_1.blogServices.getBlogs();
+    const result = yield services_1.blogServices.getBlogs(req === null || req === void 0 ? void 0 : req.query);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         message: "blog fetched successful",

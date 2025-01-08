@@ -8,6 +8,7 @@ const zod_1 = require("zod");
 const HandleZodError_1 = __importDefault(require("../errors/HandleZodError"));
 const HandleCastError_1 = __importDefault(require("../errors/HandleCastError"));
 const HandleMongooseError_1 = __importDefault(require("../errors/HandleMongooseError"));
+const AppError_1 = __importDefault(require("./AppError"));
 const globalErrorHandler = (error, req, res, next) => {
     let status = 500;
     let message = (error === null || error === void 0 ? void 0 : error.message) || "Something went wrong";
@@ -34,6 +35,17 @@ const globalErrorHandler = (error, req, res, next) => {
         (status = simplified.statusCode),
             (message = simplified.message),
             (errorSources = simplified.errorSources);
+    }
+    else if (error instanceof AppError_1.default) {
+        // Handle custom AppError
+        status = error.statusCode;
+        message = error.message;
+        errorSources = [
+            {
+                path: "",
+                message: error.message,
+            },
+        ];
     }
     res.status(status).json({
         success: false,

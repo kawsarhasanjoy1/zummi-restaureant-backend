@@ -13,27 +13,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogServices = void 0;
+const QueryBuilder_1 = __importDefault(require("../../Builder/QueryBuilder"));
 const AppError_1 = __importDefault(require("../../middleWare/AppError"));
 const model_1 = __importDefault(require("./model"));
 const createBlog = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_1.default.create(payload);
     return result;
 });
-const getBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.find();
-    return result;
+const getBlogs = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const searchTerm = ["name", "title"];
+    const searchQuery = new QueryBuilder_1.default(model_1.default.find(), query)
+        .search(searchTerm)
+        .filter()
+        .sort()
+        .pagination();
+    const meta = yield searchQuery.countTotal();
+    const result = yield searchQuery.QueryModel;
+    return {
+        meta,
+        result,
+    };
 });
 const getBlog = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_1.default.findById({ id });
     if (!result) {
-        throw new AppError_1.default(404, 'Product dose not exist');
+        throw new AppError_1.default(404, "Product dose not exist");
     }
     return result;
 });
 const deleteBlog = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_1.default.findByIdAndDelete(id);
     if (!result) {
-        throw new AppError_1.default(404, 'Product dose not exist');
+        throw new AppError_1.default(404, "Product dose not exist");
     }
 });
 exports.blogServices = {

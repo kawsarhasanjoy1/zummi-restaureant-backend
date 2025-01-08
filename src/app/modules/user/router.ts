@@ -7,10 +7,7 @@ import { USER_ROLE } from "../../constance/constance";
 
 const userRouter = Router();
 
-userRouter.post(
-  "/create-chef",
-  userController.createChef
-);
+userRouter.post("/create-chef", userController.createChef);
 userRouter.post(
   "/create-user",
   zodMiddleware(UserZodValidation),
@@ -22,9 +19,9 @@ userRouter.get(
   userController.getAllUser
 );
 userRouter.get("/get-single-user/:userId", userController.getSingleUser);
-userRouter.get(
+userRouter.delete(
   "/delete-user/:userId",
-  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
+  // auth(USER_ROLE.admin, USER_ROLE.superAdmin),
   userController.deleteUser
 );
 userRouter.post(

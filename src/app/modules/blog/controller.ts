@@ -17,7 +17,7 @@ const createBlog = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getBlogs = catchAsync(async (req: Request, res: Response) => {
-  const result = await blogServices.getBlogs();
+  const result = await blogServices.getBlogs(req?.query);
   sendResponse(res, {
     statusCode: 200,
     message: "blog fetched successful",

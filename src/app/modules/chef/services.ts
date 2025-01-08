@@ -1,9 +1,20 @@
+import QueryBuilder from "../../Builder/QueryBuilder";
 import { TChef } from "./interface";
 import chefModel from "./model";
 
-const getChefs = async () => {
-  const result = await chefModel.find().populate("userId");
-  return result;
+const getChefs = async (query: Record<string, any>) => {
+  const searchTerm = ["name", "title"];
+  const searchQuery = new QueryBuilder(chefModel.find(), query)
+    .search(searchTerm)
+    .filter()
+    .sort()
+    .pagination();
+  const countTotal = await searchQuery.countTotal();
+  const result = await searchQuery.QueryModel.populate("userId");
+  return {
+    countTotal,
+    result,
+  };
 };
 const getChef = async (id: string) => {
   const result = await chefModel.findById(id);

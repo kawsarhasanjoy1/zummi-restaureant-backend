@@ -28,8 +28,8 @@ class QueryBuilder<T> {
     return this;
   }
   sort() {
-    const sort = this?.query?.sort || "-createdAt";
-    this.QueryModel = this.QueryModel.sort(sort as string);
+    const sortField = (this.query.sort as string) || "-createdAt";
+    this.QueryModel = this.QueryModel.sort(sortField);
     return this;
   }
   pagination() {
@@ -38,6 +38,20 @@ class QueryBuilder<T> {
     const skip = (Number(page) - 1) * Number(limit);
     this.QueryModel = this.QueryModel.skip(Number(skip)).limit(Number(limit));
     return this;
+  }
+  async countTotal() {
+    const totalQueries = this.QueryModel.getFilter();
+    const total = await this.QueryModel.model.countDocuments(totalQueries);
+    const page = Number(this?.query?.page) || 1;
+    const limit = Number(this?.query?.limit) || 10;
+    const totalPage = Math.ceil(total / limit);
+
+    return {
+      page,
+      limit,
+      total,
+      totalPage,
+    };
   }
 }
 

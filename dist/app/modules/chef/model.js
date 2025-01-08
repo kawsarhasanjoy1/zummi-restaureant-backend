@@ -10,8 +10,8 @@ const chefSchema = new mongoose_1.Schema({
     experience: { type: Number, required: true },
     description: { type: String, required: true },
     image: { type: String, required: true },
-    password: { type: String, required: true, default: "zummi123" },
-});
+    password: { type: String, default: "zummi123" },
+}, { timestamps: true });
 chefSchema.index({ email: 1, contactNumber: 1, userId: 1 });
 const chefModel = (0, mongoose_1.model)("chef", chefSchema);
 exports.default = chefModel;

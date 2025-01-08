@@ -4,7 +4,7 @@ import catchAsync from "../../../shared/utils/catchAsync";
 import sendResponse from "../../../shared/utils/sendResponse";
 
 const getChefs = catchAsync(async (req: Request, res: Response) => {
-  const result = await chefServices.getChefs();
+  const result = await chefServices.getChefs(req?.query);
   sendResponse(res, {
     statusCode: 200,
     message: "Chef fetched successful",
