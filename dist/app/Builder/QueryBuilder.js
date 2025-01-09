@@ -39,7 +39,7 @@ class QueryBuilder {
     pagination() {
         var _a, _b;
         const page = ((_a = this === null || this === void 0 ? void 0 : this.query) === null || _a === void 0 ? void 0 : _a.page) || 1;
-        const limit = ((_b = this === null || this === void 0 ? void 0 : this.query) === null || _b === void 0 ? void 0 : _b.limit) || 10;
+        const limit = (_b = this === null || this === void 0 ? void 0 : this.query) === null || _b === void 0 ? void 0 : _b.limit;
         const skip = (Number(page) - 1) * Number(limit);
         this.QueryModel = this.QueryModel.skip(Number(skip)).limit(Number(limit));
         return this;

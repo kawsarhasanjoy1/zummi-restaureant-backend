@@ -36,6 +36,16 @@ const getAllUser = catchAsync(
     });
   }
 );
+const fetchAllUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userServices.fetchAllUser();
+    sendResponse(res, {
+      statusCode: 200,
+      message: "user faced successful",
+      data: result,
+    });
+  }
+);
 const getSingleUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.userId;
@@ -94,4 +104,5 @@ export const userController = {
   deleteUser,
   UpdateUser,
   UpdateRole,
+  fetchAllUser
 };

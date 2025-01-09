@@ -13,6 +13,7 @@ const userRouter = (0, express_1.Router)();
 userRouter.post("/create-chef", controller_1.userController.createChef);
 userRouter.post("/create-user", (0, zoodMiddleware_1.default)(zod_validation_1.default), controller_1.userController.createUser);
 userRouter.get("/all-user", (0, auth_1.auth)(constance_1.USER_ROLE.admin, constance_1.USER_ROLE.superAdmin), controller_1.userController.getAllUser);
+userRouter.get("/fetch-users", controller_1.userController.fetchAllUser);
 userRouter.get("/get-single-user/:userId", controller_1.userController.getSingleUser);
 userRouter.delete("/delete-user/:userId", 
 // auth(USER_ROLE.admin, USER_ROLE.superAdmin),

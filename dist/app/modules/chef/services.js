@@ -22,10 +22,10 @@ const getChefs = (query) => __awaiter(void 0, void 0, void 0, function* () {
         .filter()
         .sort()
         .pagination();
-    const countTotal = yield searchQuery.countTotal();
+    const meta = yield searchQuery.countTotal();
     const result = yield searchQuery.QueryModel.populate("userId");
     return {
-        countTotal,
+        meta,
         result,
     };
 });

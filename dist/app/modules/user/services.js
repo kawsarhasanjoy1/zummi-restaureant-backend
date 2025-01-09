@@ -65,6 +65,10 @@ const getAllUser = (query) => __awaiter(void 0, void 0, void 0, function* () {
         meta,
     };
 });
+const fetchAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield model_2.default.find();
+    return result;
+});
 const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_2.default.findById(id);
     return result;
@@ -98,4 +102,5 @@ exports.userServices = {
     deleteUser,
     updateUser,
     updateRole,
+    fetchAllUser
 };

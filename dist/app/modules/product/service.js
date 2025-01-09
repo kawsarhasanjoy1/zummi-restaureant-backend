@@ -58,14 +58,14 @@ const getProducts = (query) => __awaiter(void 0, void 0, void 0, function* () {
         .sort()
         .pagination();
     const meta = yield productQuery.countTotal();
-    const result = yield productQuery.QueryModel.populate("userId");
+    const result = yield productQuery.QueryModel.populate("userId").populate("reviews");
     return {
         result,
         meta,
     };
 });
 const getProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.findById(id);
+    const result = yield model_1.default.findById(id).populate("reviews");
     return result;
 });
 const upProduct = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {

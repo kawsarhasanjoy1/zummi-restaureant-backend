@@ -43,6 +43,14 @@ const getAllUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 
         data: result,
     });
 }));
+const fetchAllUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield services_1.userServices.fetchAllUser();
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "user faced successful",
+        data: result,
+    });
+}));
 const getSingleUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.userId;
     const result = yield services_1.userServices.getSingleUser(id);
@@ -89,4 +97,5 @@ exports.userController = {
     deleteUser,
     UpdateUser,
     UpdateRole,
+    fetchAllUser
 };

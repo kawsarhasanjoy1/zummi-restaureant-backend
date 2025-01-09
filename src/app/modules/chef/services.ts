@@ -9,10 +9,10 @@ const getChefs = async (query: Record<string, any>) => {
     .filter()
     .sort()
     .pagination();
-  const countTotal = await searchQuery.countTotal();
+  const meta = await searchQuery.countTotal();
   const result = await searchQuery.QueryModel.populate("userId");
   return {
-    countTotal,
+    meta,
     result,
   };
 };

@@ -47,21 +47,22 @@ const getProducts = async (query: Record<string, unknown>) => {
   // const sortQuery = filterQuery.sort(sort);
   // const paginationQuery = sortQuery.skip(skip);
   // const limitQuery = await paginationQuery.limit(limit);
-
   const productQuery = new QueryBuilder(ProductModel.find(), query)
     .search(searchField)
     .filter()
     .sort()
     .pagination();
   const meta = await productQuery.countTotal();
-  const result = await productQuery.QueryModel.populate("userId");
+  const result = await productQuery.QueryModel.populate("userId").populate(
+    "reviews"
+  );
   return {
     result,
     meta,
   };
 };
 const getProduct = async (id: string) => {
-  const result = await ProductModel.findById(id);
+  const result = await ProductModel.findById(id).populate("reviews");
   return result;
 };
 const upProduct = async (id: string, payload: Partial<TProduct>) => {

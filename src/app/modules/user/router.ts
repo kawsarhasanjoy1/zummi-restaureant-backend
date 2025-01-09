@@ -18,6 +18,7 @@ userRouter.get(
   auth(USER_ROLE.admin, USER_ROLE.superAdmin),
   userController.getAllUser
 );
+userRouter.get("/fetch-users", userController.fetchAllUser);
 userRouter.get("/get-single-user/:userId", userController.getSingleUser);
 userRouter.delete(
   "/delete-user/:userId",

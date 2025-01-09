@@ -16,7 +16,7 @@ ProductRouter.post(
 ProductRouter.get("/get-products", productController.getProducts);
 ProductRouter.get(
   "/get-product/:productId",
-  auth(USER_ROLE.admin, USER_ROLE.superAdmin, USER_ROLE.user),
+  // auth(USER_ROLE.admin, USER_ROLE.superAdmin, USER_ROLE.user),
   productController.getProduct
 );
 ProductRouter.post(

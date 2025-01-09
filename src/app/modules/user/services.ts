@@ -63,6 +63,11 @@ const getAllUser = async (query: any) => {
     meta,
   };
 };
+const fetchAllUser = async () => {
+  const result = await UserModel.find();
+
+  return result;
+};
 const getSingleUser = async (id: string) => {
   const result = await UserModel.findById(id);
   return result;
@@ -101,4 +106,5 @@ export const userServices = {
   deleteUser,
   updateUser,
   updateRole,
+  fetchAllUser
 };
