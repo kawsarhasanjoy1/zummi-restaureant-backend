@@ -40,6 +40,24 @@ const deleteOrder = async (req: Request, res: Response) => {
     data: result,
   });
 };
+const getUserStats = async (req: Request, res: Response) => {
+  const id = req?.params?.userId;
+  const result = await orderServices.getUserStats(id);
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: "user stats get successful",
+    data: result,
+  });
+};
+const getChefStats = async (req: Request, res: Response) => {
+  const result = await orderServices.getChefStats();
+  sendResponse(res, {
+    statusCode: 200,
+    message: "chef stats get successful",
+    data: result,
+  });
+};
 const getAdminStats = async (req: Request, res: Response) => {
   const result = await orderServices.getAdminStats();
 
@@ -65,5 +83,7 @@ export const orderController = {
   deleteOrder,
   getUserOrder,
   deleteUserOrder,
-  getAdminStats
+  getAdminStats,
+  getUserStats,
+  getChefStats,
 };

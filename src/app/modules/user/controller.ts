@@ -94,9 +94,11 @@ const UpdateUser = catchAsync(
 );
 const UpdateRole = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const currentAdmin = req?.user
     const id = req.params.userId;
     const { role } = req.body;
-    const result = await userServices.updateRole(id, role);
+
+    const result = await userServices.updateRole(id, role, currentAdmin);
     sendResponse(res, {
       statusCode: 200,
       message: "Role update successful",

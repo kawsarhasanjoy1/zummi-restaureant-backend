@@ -53,6 +53,10 @@ const updateStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         res.redirect(`https://zummi-restaureant.vercel.app/success/${findOrder === null || findOrder === void 0 ? void 0 : findOrder.transactionId}`);
         return result;
     })));
+    const updatedOrder = yield model_1.orderModel.findOneAndUpdate({ transactionId: transactionId }, { status: true }, { new: true, runValidators: true });
+    if (!updatedOrder) {
+        return res.status(404).json({ message: "Order not found" });
+    }
     const payment = {
         orderId: findOrder === null || findOrder === void 0 ? void 0 : findOrder._id,
         userId: findOrder === null || findOrder === void 0 ? void 0 : findOrder.userId,
@@ -67,10 +71,6 @@ const updateStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
     const paymentResult = yield model_3.paymentModel.create(payment);
     if (!productId.length || !paymentResult) {
         throw new AppError_1.default(404, "Dose not update product");
-    }
-    const updatedOrder = yield model_1.orderModel.findOneAndUpdate({ transactionId }, { status: true }, { new: true, runValidators: true });
-    if (!updatedOrder) {
-        return res.status(404).json({ message: "Order not found" });
     }
     res.status(200).json({
         success: true,

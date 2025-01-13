@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { orderController } from "./controller";
-import  auth  from "../../middleWare/auth";
+import auth from "../../middleWare/auth";
 import { USER_ROLE } from "../../constance/constance";
 
 const OrderRouter = Router();
@@ -20,6 +20,16 @@ OrderRouter.delete(
   "/delete-user-order/:userId",
   auth(USER_ROLE.user),
   orderController.deleteUserOrder
+);
+OrderRouter.get(
+  "/get-user-stats/:userId",
+  auth(USER_ROLE.user),
+  orderController.getUserStats
+);
+OrderRouter.get(
+  "/get-chef-stats",
+  auth(USER_ROLE.chef),
+  orderController.getChefStats
 );
 OrderRouter.get(
   "/get-admin-stats",

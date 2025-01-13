@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.orderServices = void 0;
+const mongoose_1 = require("mongoose");
 const QueryBuilder_1 = __importDefault(require("../../Builder/QueryBuilder"));
 const model_1 = __importDefault(require("../blog/model"));
 const model_2 = __importDefault(require("../chef/model"));
@@ -55,6 +56,77 @@ const getUserOrder = (_a) => __awaiter(void 0, [_a], void 0, function* ({ id, qu
 const deleteOrder = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_6.orderModel.findByIdAndDelete(id);
     return result;
+});
+const getUserStats = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    const orderStats = yield model_6.orderModel.aggregate([
+        {
+            $match: { userId: new mongoose_1.Types.ObjectId(userId) }, // Ensure proper type
+        },
+        { $unwind: "$products" },
+        {
+            $lookup: {
+                from: "products",
+                localField: "products.productId",
+                foreignField: "_id",
+                as: "productDetails",
+            },
+        },
+        { $unwind: "$productDetails" },
+        {
+            $group: {
+                _id: "$productDetails.category",
+                totalPrice: {
+                    $sum: { $multiply: ["$products.quantity", "$productDetails.price"] },
+                },
+                totalOrder: { $sum: "$products.quantity" },
+            },
+        },
+    ]);
+    const totalReview = yield model_4.default.countDocuments({ user: userId });
+    return {
+        orderDetails: orderStats,
+        totalPrice: ((_a = orderStats[0]) === null || _a === void 0 ? void 0 : _a.totalPrice) || 0,
+        totalOrder: ((_b = orderStats[0]) === null || _b === void 0 ? void 0 : _b.totalOrder) || 0,
+        totalReview,
+    };
+});
+const getChefStats = () => __awaiter(void 0, void 0, void 0, function* () {
+    const orders = yield model_6.orderModel
+        .find()
+        .populate("products.productId");
+    const orderDetails = yield model_6.orderModel.aggregate([
+        { $unwind: "$products" },
+        {
+            $lookup: {
+                from: "products",
+                localField: "products.productId",
+                foreignField: "_id",
+                as: "productDetails",
+            },
+        },
+        { $unwind: "$productDetails" },
+        {
+            $group: {
+                _id: "$productDetails.category",
+                count: { $sum: "$products.quantity" },
+                totalPrice: {
+                    $sum: { $multiply: ["$products.quantity", "$productDetails.price"] },
+                },
+            },
+        },
+    ]);
+    const totalOrder = orders.reduce((acc, cur) => acc + cur.quantity, 0);
+    const totalProduct = yield model_3.default.estimatedDocumentCount();
+    const totalReview = yield model_4.default.estimatedDocumentCount();
+    const totalChef = yield model_2.default.estimatedDocumentCount();
+    return {
+        orderDetails,
+        totalOrder,
+        totalReview,
+        totalProduct,
+        totalChef,
+    };
 });
 const getAdminStats = () => __awaiter(void 0, void 0, void 0, function* () {
     const orders = yield model_6.orderModel
@@ -111,4 +183,6 @@ exports.orderServices = {
     getUserOrder,
     deleteUserOrder,
     getAdminStats,
+    getUserStats,
+    getChefStats,
 };

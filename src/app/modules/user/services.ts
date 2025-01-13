@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 import QueryBuilder from "../../Builder/QueryBuilder";
 import AppError from "../../middleWare/AppError";
 import { TChef } from "../chef/interface";
 import chefModel from "../chef/model";
 import { TUser } from "./interface";
 import UserModel from "./model";
+import config from "../../../config/config";
 
 const createChef = async (payload: TChef) => {
   const session = await UserModel.startSession();
@@ -96,12 +97,23 @@ const updateUser = async (id: string, payload: any) => {
   return result;
 };
 
-const updateRole = async (id: string, role: string) => {
+const updateRole = async (id: string, role: string, currentAdmin: any) => {
+  const user = await UserModel.findOne({ _id: id });
+  const userId = user?._id as any;
+  if (!user) {
+    throw new AppError(404, "User not found");
+  }
+
+  if (userId == currentAdmin?.id) {
+    throw new AppError(403, "You cannot update your own role");
+  }
+
   const result = await UserModel.findOneAndUpdate(
     { _id: id },
     { role: role },
     { new: true }
   );
+
   return result;
 };
 

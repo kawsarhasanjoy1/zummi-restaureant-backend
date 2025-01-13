@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import QueryBuilder from "../../Builder/QueryBuilder";
 import BlogModel from "../blog/model";
 import chefModel from "../chef/model";
@@ -34,9 +35,11 @@ const getUserOrder = async ({ id, query }: any) => {
     .filter()
     .pagination()
     .sort();
+
   const result = await searchQuery.QueryModel.populate("userId").populate(
     "products.productId"
   );
+
   const meta = await searchQuery.countTotal();
 
   return {
@@ -49,6 +52,83 @@ const deleteOrder = async (id: string) => {
   const result = await orderModel.findByIdAndDelete(id);
   return result;
 };
+const getUserStats = async (userId: string) => {
+  const orderStats = await orderModel.aggregate([
+    {
+      $match: { userId: new Types.ObjectId(userId) }, // Ensure proper type
+    },
+    { $unwind: "$products" },
+    {
+      $lookup: {
+        from: "products",
+        localField: "products.productId",
+        foreignField: "_id",
+        as: "productDetails",
+      },
+    },
+    { $unwind: "$productDetails" },
+    {
+      $group: {
+        _id: "$productDetails.category",
+        totalPrice: {
+          $sum: { $multiply: ["$products.quantity", "$productDetails.price"] },
+        },
+        totalOrder: { $sum: "$products.quantity" },
+      },
+    },
+  ]);
+
+  const totalReview = await ReviewModel.countDocuments({ user: userId });
+
+  return {
+    orderDetails: orderStats,
+    totalPrice: orderStats[0]?.totalPrice || 0,
+    totalOrder: orderStats[0]?.totalOrder || 0,
+    totalReview,
+  };
+};
+
+const getChefStats = async () => {
+  const orders: TOrder[] = await orderModel
+    .find()
+    .populate("products.productId");
+
+  const orderDetails = await orderModel.aggregate([
+    { $unwind: "$products" },
+    {
+      $lookup: {
+        from: "products",
+        localField: "products.productId",
+        foreignField: "_id",
+        as: "productDetails",
+      },
+    },
+    { $unwind: "$productDetails" },
+    {
+      $group: {
+        _id: "$productDetails.category",
+        count: { $sum: "$products.quantity" },
+        totalPrice: {
+          $sum: { $multiply: ["$products.quantity", "$productDetails.price"] },
+        },
+      },
+    },
+  ]);
+
+  const totalOrder = orders.reduce((acc, cur) => acc + cur.quantity, 0);
+  const totalProduct = await ProductModel.estimatedDocumentCount();
+  const totalReview = await ReviewModel.estimatedDocumentCount();
+  const totalChef = await chefModel.estimatedDocumentCount();
+
+  return {
+    orderDetails,
+    totalOrder,
+    totalReview,
+    totalProduct,
+    totalChef,
+  };
+};
+
 const getAdminStats = async () => {
   const orders: TOrder[] = await orderModel
     .find()
@@ -108,4 +188,6 @@ export const orderServices = {
   getUserOrder,
   deleteUserOrder,
   getAdminStats,
+  getUserStats,
+  getChefStats,
 };

@@ -87,9 +87,10 @@ const UpdateUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 
     });
 }));
 const UpdateRole = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const currentAdmin = req === null || req === void 0 ? void 0 : req.user;
     const id = req.params.userId;
     const { role } = req.body;
-    const result = yield services_1.userServices.updateRole(id, role);
+    const result = yield services_1.userServices.updateRole(id, role, currentAdmin);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         message: "Role update successful",

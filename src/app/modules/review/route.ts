@@ -13,7 +13,7 @@ ReviewRouter.post(
   reviewController.createReview
 );
 ReviewRouter.get("/get-reviews", reviewController.getReviews);
-ReviewRouter.get("/get-review/:userId", reviewController.getReviews);
+ReviewRouter.get("/get-review/:userId", reviewController.getUserReview);
 ReviewRouter.delete(
   "/delete-review/:reviewId",
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),

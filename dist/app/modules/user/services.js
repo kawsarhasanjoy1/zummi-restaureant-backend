@@ -95,7 +95,15 @@ const updateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
     const result = yield model_2.default.findByIdAndUpdate(id, payload, { new: true });
     return result;
 });
-const updateRole = (id, role) => __awaiter(void 0, void 0, void 0, function* () {
+const updateRole = (id, role, currentAdmin) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield model_2.default.findOne({ _id: id });
+    const userId = user === null || user === void 0 ? void 0 : user._id;
+    if (!user) {
+        throw new AppError_1.default(404, "User not found");
+    }
+    if (userId == (currentAdmin === null || currentAdmin === void 0 ? void 0 : currentAdmin.id)) {
+        throw new AppError_1.default(403, "You cannot update your own role");
+    }
     const result = yield model_2.default.findOneAndUpdate({ _id: id }, { role: role }, { new: true });
     return result;
 });

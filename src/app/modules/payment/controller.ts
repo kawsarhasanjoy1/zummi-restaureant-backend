@@ -47,11 +47,21 @@ const updateStatus = catchAsync(async (req: Request, res: Response) => {
         $inc: { stock: -product?.quantity },
       });
 
-      res.redirect(`https://zummi-restaureant.vercel.app/success/${findOrder?.transactionId}`);
+      res.redirect(
+        `https://zummi-restaureant.vercel.app/success/${findOrder?.transactionId}`
+      );
       return result;
     })
   );
+  const updatedOrder = await orderModel.findOneAndUpdate(
+    { transactionId: transactionId },
+    { status: true },
+    { new: true, runValidators: true }
+  );
 
+  if (!updatedOrder) {
+    return res.status(404).json({ message: "Order not found" });
+  }
   const payment = {
     orderId: findOrder?._id,
     userId: findOrder?.userId,
@@ -67,15 +77,6 @@ const updateStatus = catchAsync(async (req: Request, res: Response) => {
   const paymentResult = await paymentModel.create(payment);
   if (!productId.length || !paymentResult) {
     throw new AppError(404, "Dose not update product");
-  }
-  const updatedOrder = await orderModel.findOneAndUpdate(
-    { transactionId },
-    { status: true },
-    { new: true, runValidators: true }
-  );
-
-  if (!updatedOrder) {
-    return res.status(404).json({ message: "Order not found" });
   }
 
   res.status(200).json({

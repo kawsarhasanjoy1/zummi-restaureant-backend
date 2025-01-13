@@ -52,6 +52,24 @@ const deleteOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         data: result,
     });
 });
+const getUserStats = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const id = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.userId;
+    const result = yield services_1.orderServices.getUserStats(id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "user stats get successful",
+        data: result,
+    });
+});
+const getChefStats = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield services_1.orderServices.getChefStats();
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "chef stats get successful",
+        data: result,
+    });
+});
 const getAdminStats = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield services_1.orderServices.getAdminStats();
     (0, sendResponse_1.default)(res, {
@@ -75,5 +93,7 @@ exports.orderController = {
     deleteOrder,
     getUserOrder,
     deleteUserOrder,
-    getAdminStats
+    getAdminStats,
+    getUserStats,
+    getChefStats,
 };
