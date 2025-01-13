@@ -6,6 +6,9 @@ import ReviewRouter from "../modules/review/route";
 import BlogRouter from "../modules/blog/route";
 import OrderRouter from "../modules/order/route";
 import chefRouter from "../modules/chef/route";
+import paymentRouter from "../modules/payment/route";
+import activityRouter from "../modules/recentActivity/router";
+
 
 const router = Router();
 
@@ -38,6 +41,15 @@ const RouterPath = [
     path: "/api/v1",
     route: chefRouter,
   },
+  {
+    path: "/api/v1",
+    route: paymentRouter,
+  },
+  {
+    path: "/api/v1",
+    route: activityRouter,
+  },
+ 
 ];
 
 RouterPath.map((route) => router.use(route?.path, route?.route));

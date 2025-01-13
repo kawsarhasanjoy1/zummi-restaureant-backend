@@ -11,6 +11,8 @@ const route_2 = __importDefault(require("../modules/review/route"));
 const route_3 = __importDefault(require("../modules/blog/route"));
 const route_4 = __importDefault(require("../modules/order/route"));
 const route_5 = __importDefault(require("../modules/chef/route"));
+const route_6 = __importDefault(require("../modules/payment/route"));
+const router_3 = __importDefault(require("../modules/recentActivity/router"));
 const router = (0, express_1.Router)();
 const RouterPath = [
     {
@@ -40,6 +42,14 @@ const RouterPath = [
     {
         path: "/api/v1",
         route: route_5.default,
+    },
+    {
+        path: "/api/v1",
+        route: route_6.default,
+    },
+    {
+        path: "/api/v1",
+        route: router_3.default,
     },
 ];
 RouterPath.map((route) => router.use(route === null || route === void 0 ? void 0 : route.path, route === null || route === void 0 ? void 0 : route.route));

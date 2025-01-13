@@ -5,11 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const controller_1 = require("./controller");
-const zoodMiddleware_1 = __importDefault(require("../../middleWare/zoodMiddleware"));
-const orderValidationSchema_1 = __importDefault(require("./orderValidationSchema"));
+const auth_1 = __importDefault(require("../../middleWare/auth"));
+const constance_1 = require("../../constance/constance");
 const OrderRouter = (0, express_1.Router)();
-OrderRouter.post("/create-order", (0, zoodMiddleware_1.default)(orderValidationSchema_1.default), controller_1.orderController.createOrder);
-OrderRouter.get("/get-orders", controller_1.orderController.getOrders);
+OrderRouter.get("/get-orders", (0, auth_1.default)(constance_1.USER_ROLE.admin, constance_1.USER_ROLE.superAdmin, constance_1.USER_ROLE.chef), controller_1.orderController.getOrders);
 OrderRouter.get("/get-order/:orderId", controller_1.orderController.getOrder);
-OrderRouter.delete("/delete-order/:orderId", controller_1.orderController.deleteOrder);
+OrderRouter.get("/get-user-order/:userId", (0, auth_1.default)(constance_1.USER_ROLE.user), controller_1.orderController.getUserOrder);
+OrderRouter.delete("/delete-user-order/:userId", (0, auth_1.default)(constance_1.USER_ROLE.user), controller_1.orderController.deleteUserOrder);
+OrderRouter.get("/get-admin-stats", (0, auth_1.default)(constance_1.USER_ROLE.superAdmin, constance_1.USER_ROLE.admin), controller_1.orderController.getAdminStats);
+OrderRouter.delete("/delete-order/:orderId", (0, auth_1.default)(constance_1.USER_ROLE.admin, constance_1.USER_ROLE.superAdmin), controller_1.orderController.deleteOrder);
 exports.default = OrderRouter;

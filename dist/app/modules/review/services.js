@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reviewServices = void 0;
+const QueryBuilder_1 = __importDefault(require("../../Builder/QueryBuilder"));
 const model_1 = __importDefault(require("./model"));
 const createReview = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_1.default.create(payload);
@@ -21,13 +22,41 @@ const createReview = (payload) => __awaiter(void 0, void 0, void 0, function* ()
     }
     return result;
 });
-const getReviews = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield model_1.default.find()
-        .populate("productId")
-        .populate("user");
+const getReviews = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const searchTerm = ["rating"];
+    const searchQuery = new QueryBuilder_1.default(model_1.default.find(), query)
+        .search(searchTerm)
+        .filter()
+        .sort()
+        .pagination();
+    const countTotal = yield searchQuery.countTotal();
+    const result = yield searchQuery.QueryModel.populate("productId").populate("user");
+    return {
+        countTotal,
+        result,
+    };
+});
+const getUserReviews = (_a) => __awaiter(void 0, [_a], void 0, function* ({ id, query }) {
+    const searchTerm = ["rating"];
+    const searchQuery = new QueryBuilder_1.default(model_1.default.find({ user: id }), query)
+        .search(searchTerm)
+        .filter()
+        .sort()
+        .pagination();
+    const countTotal = yield searchQuery.countTotal();
+    const result = yield searchQuery.QueryModel.populate("productId").populate("user");
+    return {
+        countTotal,
+        result,
+    };
+});
+const deleteReview = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield model_1.default.findByIdAndDelete(id);
     return result;
 });
 exports.reviewServices = {
     createReview,
     getReviews,
+    getUserReviews,
+    deleteReview,
 };

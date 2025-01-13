@@ -15,17 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.orderController = void 0;
 const services_1 = require("./services");
 const sendResponse_1 = __importDefault(require("../../../shared/utils/sendResponse"));
-const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const order = req.body;
-    const result = yield services_1.orderServices.createOrder(order);
-    (0, sendResponse_1.default)(res, {
-        statusCode: 201,
-        message: "Order successful",
-        data: result,
-    });
-});
 const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield services_1.orderServices.getOrders();
+    const query = req === null || req === void 0 ? void 0 : req.query;
+    const result = yield services_1.orderServices.getOrders(query);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         message: " order fetched successful",
@@ -41,6 +33,16 @@ const getOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         data: result,
     });
 });
+const getUserOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.userId;
+    const query = req.query;
+    const result = yield services_1.orderServices.getUserOrder({ id, query });
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "user order fetched successful",
+        data: result,
+    });
+});
 const deleteOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.orderId;
     const result = yield services_1.orderServices.deleteOrder(id);
@@ -50,9 +52,28 @@ const deleteOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         data: result,
     });
 });
+const getAdminStats = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield services_1.orderServices.getAdminStats();
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "admin stats get successful",
+        data: result,
+    });
+});
+const deleteUserOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.userId;
+    const result = yield services_1.orderServices.deleteOrder(id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "user order deleted successful",
+        data: result,
+    });
+});
 exports.orderController = {
-    createOrder,
     getOrders,
     getOrder,
     deleteOrder,
+    getUserOrder,
+    deleteUserOrder,
+    getAdminStats
 };

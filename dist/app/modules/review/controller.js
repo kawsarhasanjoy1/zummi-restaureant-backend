@@ -26,14 +26,35 @@ const createReview = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
     });
 }));
 const getReviews = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield services_1.reviewServices.getReviews();
+    const result = yield services_1.reviewServices.getReviews(req.query);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         message: "review fetched successful",
         data: result,
     });
 }));
+const getUserReview = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const query = req.query;
+    const id = req.params.userId;
+    const result = yield services_1.reviewServices.getUserReviews({ id, query });
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "review fetched successful",
+        data: result,
+    });
+}));
+const deleteReviews = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const result = yield services_1.reviewServices.deleteReview((_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.reviewId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "review deleted successful",
+        data: result,
+    });
+}));
 exports.reviewController = {
     createReview,
     getReviews,
+    getUserReview,
+    deleteReviews
 };

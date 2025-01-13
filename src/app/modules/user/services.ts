@@ -63,6 +63,12 @@ const getAllUser = async (query: any) => {
     meta,
   };
 };
+const fetchAdmin = async () => {
+  const admin = "admin";
+  const result = await UserModel.find({ role: admin });
+
+  return result;
+};
 const fetchAllUser = async () => {
   const result = await UserModel.find();
 
@@ -89,6 +95,7 @@ const updateUser = async (id: string, payload: any) => {
   const result = await UserModel.findByIdAndUpdate(id, payload, { new: true });
   return result;
 };
+
 const updateRole = async (id: string, role: string) => {
   const result = await UserModel.findOneAndUpdate(
     { _id: id },
@@ -106,5 +113,6 @@ export const userServices = {
   deleteUser,
   updateUser,
   updateRole,
-  fetchAllUser
+  fetchAllUser,
+  fetchAdmin,
 };

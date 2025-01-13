@@ -1,24 +1,21 @@
-import { Schema } from "mongoose";
+import { Types } from "mongoose";
 
-export interface TOrderUser {
-  email: string;
-  name: {
-    firstName: string;
-    lastName: string;
-  };
-  city: string;
-  contactNumber: string;
-}
 
-interface TOrder {
-  paymentId: string;
-  userId: Schema.Types.ObjectId;
-  email: string;
-  price: number;
+interface Product {
+  productId: Types.ObjectId;
   quantity: number;
-  productId: Schema.Types.ObjectId[];
-  userInfo: TOrderUser;
 }
 
-
-export default TOrder
+export interface TOrder {
+  products: Product[];
+  userId: Types.ObjectId;
+  email: string;
+  quantity: number;
+  price: number;
+  name: string;
+  number: string;
+  district: string;
+  subdistrict: string;
+  transactionId: string,
+  status: boolean
+}

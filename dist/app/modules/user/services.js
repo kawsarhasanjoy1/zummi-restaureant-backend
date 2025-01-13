@@ -65,6 +65,11 @@ const getAllUser = (query) => __awaiter(void 0, void 0, void 0, function* () {
         meta,
     };
 });
+const fetchAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
+    const admin = "admin";
+    const result = yield model_2.default.find({ role: admin });
+    return result;
+});
 const fetchAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield model_2.default.find();
     return result;
@@ -102,5 +107,6 @@ exports.userServices = {
     deleteUser,
     updateUser,
     updateRole,
-    fetchAllUser
+    fetchAllUser,
+    fetchAdmin,
 };

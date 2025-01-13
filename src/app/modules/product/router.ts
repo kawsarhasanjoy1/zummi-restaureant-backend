@@ -2,14 +2,14 @@ import { Router } from "express";
 import { productController } from "./controller";
 import zodMiddleware from "../../middleWare/zoodMiddleware";
 import { productSchema } from "./validation";
-import { auth } from "../../middleWare/auth";
+import  auth  from "../../middleWare/auth";
 import { USER_ROLE } from "../../constance/constance";
 
 const ProductRouter = Router();
 
 ProductRouter.post(
   "/create-product",
-  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin,USER_ROLE.chef),
   zodMiddleware(productSchema),
   productController.createProduct
 );
@@ -21,7 +21,7 @@ ProductRouter.get(
 );
 ProductRouter.post(
   "/update-product/:productId",
-  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin,USER_ROLE.chef),
   productController.upProduct
 );
 ProductRouter.delete(

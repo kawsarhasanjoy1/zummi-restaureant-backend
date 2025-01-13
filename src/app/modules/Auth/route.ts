@@ -2,7 +2,7 @@ import { Router } from "express";
 import { authController } from "./controller";
 import zodMiddleware from "../../middleWare/zoodMiddleware";
 import { TLoginUserSchema } from "./LoginUserSchema";
-import { auth } from "../../middleWare/auth";
+import  auth  from "../../middleWare/auth";
 import { USER_ROLE } from "../../constance/constance";
 
 const AuthRouter = Router();

@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
-import { TErrorSources } from "../../interface/interface";
 import HandleZodError from "../errors/HandleZodError";
 import HandleCastError from "../errors/HandleCastError";
 import HandleMongooseError from "../errors/HandleMongooseError";
 import AppError from "./AppError";
+import { TErrorSources } from "../../interface/interface";
 
 export const globalErrorHandler = (
   error: any,

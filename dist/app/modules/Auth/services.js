@@ -76,5 +76,5 @@ const changePassword = (user, Password) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.AuthService = {
     loginServices,
-    changePassword
+    changePassword,
 };

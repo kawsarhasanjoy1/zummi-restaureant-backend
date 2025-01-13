@@ -15,6 +15,7 @@ app.use((0, cors_1.default)());
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
+// app.use("/api/v1", logActivity);
 app.use(routes_1.default);
 app.use(notFound_1.default);
 app.use(globalErrorHandler_1.globalErrorHandler);

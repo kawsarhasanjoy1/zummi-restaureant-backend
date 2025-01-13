@@ -2,7 +2,7 @@ import { Router } from "express";
 import { userController } from "./controller";
 import UserZodValidation from "./zod-validation";
 import zodMiddleware from "../../middleWare/zoodMiddleware";
-import { auth } from "../../middleWare/auth";
+import  auth  from "../../middleWare/auth";
 import { USER_ROLE } from "../../constance/constance";
 
 const userRouter = Router();
@@ -19,6 +19,11 @@ userRouter.get(
   userController.getAllUser
 );
 userRouter.get("/fetch-users", userController.fetchAllUser);
+userRouter.get(
+  "/fetch-admin",
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
+  userController.fetchAdmin
+);
 userRouter.get("/get-single-user/:userId", userController.getSingleUser);
 userRouter.delete(
   "/delete-user/:userId",

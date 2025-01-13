@@ -27,7 +27,6 @@ const createChef = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 
 }));
 const createUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.body;
-    console.log(user);
     const result = yield services_1.userServices.createUser(user);
     (0, sendResponse_1.default)(res, {
         statusCode: 201,
@@ -48,6 +47,14 @@ const fetchAllUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(voi
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         message: "user faced successful",
+        data: result,
+    });
+}));
+const fetchAdmin = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield services_1.userServices.fetchAdmin();
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "admin faced successful",
         data: result,
     });
 }));
@@ -97,5 +104,6 @@ exports.userController = {
     deleteUser,
     UpdateUser,
     UpdateRole,
-    fetchAllUser
+    fetchAllUser,
+    fetchAdmin
 };

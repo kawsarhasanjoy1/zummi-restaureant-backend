@@ -4,7 +4,6 @@ import { TLoginUser } from "./interface";
 import bcrypt from "bcrypt";
 import config from "../../../config/config";
 import AppError from "../../middleWare/AppError";
-import { TPassword } from "../../../interface/interface";
 
 const loginServices = async (payload: TLoginUser) => {
   const { email, password } = payload;
@@ -36,12 +35,10 @@ const loginServices = async (payload: TLoginUser) => {
   };
 };
 
-const changePassword = async (user: JwtPayload, Password: TPassword) => {
+const changePassword = async (user: JwtPayload, Password: any) => {
   const isExistsId = await UserModel.findById(user?.id);
   if (!isExistsId) {
-    throw new Error(
-      "User dose not exist"
-    );
+    throw new Error("User dose not exist");
   }
   const role = user?.role;
   const dbRole = isExistsId?.role;
@@ -83,5 +80,5 @@ const changePassword = async (user: JwtPayload, Password: TPassword) => {
 
 export const AuthService = {
   loginServices,
-  changePassword
+  changePassword,
 };

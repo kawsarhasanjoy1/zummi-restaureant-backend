@@ -17,7 +17,6 @@ const createChef = catchAsync(
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body;
-    console.log(user)
     const result = await userServices.createUser(user);
     sendResponse(res, {
       statusCode: 201,
@@ -42,6 +41,16 @@ const fetchAllUser = catchAsync(
     sendResponse(res, {
       statusCode: 200,
       message: "user faced successful",
+      data: result,
+    });
+  }
+);
+const fetchAdmin = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userServices.fetchAdmin();
+    sendResponse(res, {
+      statusCode: 200,
+      message: "admin faced successful",
       data: result,
     });
   }
@@ -104,5 +113,6 @@ export const userController = {
   deleteUser,
   UpdateUser,
   UpdateRole,
-  fetchAllUser
+  fetchAllUser,
+  fetchAdmin
 };
